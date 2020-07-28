@@ -26,31 +26,31 @@ class GenericLevel(ABC):
         self.store = store
 
     @abstractmethod
-    def pause_game(self):
+    def pause_game(self, *args):
         pass
 
     @abstractmethod
-    def start_game(self):
+    def start_game(self, *args):
         pass
 
     @abstractmethod
-    def show(self):
+    def show(self, *args):
         pass
 
     @abstractmethod
-    def dynamics(self):
+    def dynamics(self, *args):
         pass
 
     @abstractmethod
-    def collision(self):
+    def collision(self, *args):
         pass
 
     @abstractmethod
-    def have_won(self):
+    def have_won(self, *args):
         pass
 
     @abstractmethod
-    def have_died(self):
+    def have_died(self, *args):
         pass
 
     @staticmethod
@@ -58,7 +58,7 @@ class GenericLevel(ABC):
         msg_obj = font_definition.render(msg, True, color)
         return msg_obj, msg_obj.get_rect()
 
-    def draw_grids(self):
+    def draw_grids(self, *args):
         for x in range(0, self.gameDimension[0], 10):
             pygame.draw.line(self.gameDisplay, self.grid_lines, (x, 0), (x, self.gameDimension[1]))
         for y in range(0, self.gameDimension[1], 10):

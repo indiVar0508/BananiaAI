@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 from collections import OrderedDict
 from Utility.shape import Rectangle
+from Utility import ui
 from Level.generic_level import GenericLevel
 
 
@@ -97,7 +98,7 @@ class Level(GenericLevel):
                         resume = True
 
             self.gameDisplay.fill((255, 255, 255))
-            self.message(msg="Press, S to Start", x=self.gameDimension[0] // 2 - 50, y=self.gameDimension[1] // 2)
+            ui.message(gameDisplay=self.gameDisplay,msg="Press, S to Start", x=self.gameDimension[0] // 2 - 50, y=self.gameDimension[1] // 2)
             pygame.display.update()
             self.clock.tick(30)
 
@@ -167,7 +168,7 @@ class Level(GenericLevel):
 
     def have_won(self, *args):
         self.show(*args)
-        self.message(msg="Yeah.!", x=self.gameDimension[0] // 2 - 50, y=self.gameDimension[1] // 2 - 50,
+        ui.message(gameDisplay=self.gameDisplay,msg="Yeah.!", x=self.gameDimension[0] // 2 - 50, y=self.gameDimension[1] // 2 - 50,
                      color=(100, 200, 100), font_size=50)
         pygame.display.flip()
 
@@ -175,7 +176,7 @@ class Level(GenericLevel):
         pass
 
     def start_game(self, *args):
-        self.pause_game()
+        # self.pause_game()
 
         while self.player.alive and not self.player.gotFood:
 
@@ -354,7 +355,7 @@ class Level_PathFinding(Level):
 
     def start_game(self):
 
-        self.pause_game()
+        # self.pause_game()
         self.find_path_a_star()
         current = self.cur_idx
         prev = current

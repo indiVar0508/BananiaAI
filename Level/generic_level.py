@@ -1,8 +1,11 @@
 import os
-import cv2
+try:
+    import cv2
+    from PIL import ImageGrab
+except:
+    pass
 import pygame
 import numpy as np
-from PIL import ImageGrab
 from abc import ABC, abstractmethod
 pygame.init()
 
@@ -53,22 +56,11 @@ class GenericLevel(ABC):
     def have_died(self, *args):
         pass
 
-    @staticmethod
-    def make_obj_msg(msg, font_definition, color=(0, 0, 0)):
-        msg_obj = font_definition.render(msg, True, color)
-        return msg_obj, msg_obj.get_rect()
-
     def draw_grids(self, *args):
         for x in range(0, self.gameDimension[0], 10):
             pygame.draw.line(self.gameDisplay, self.grid_lines, (x, 0), (x, self.gameDimension[1]))
         for y in range(0, self.gameDimension[1], 10):
             pygame.draw.line(self.gameDisplay, self.grid_lines, (0, y), (self.gameDimension[0], y))
-
-    def message(self, msg, color=(0, 0, 0), font_type='freesansbold.ttf', font_size=15, x=10, y=10):
-        font_definition = pygame.font.Font(font_type, font_size)
-        msg_surface, msg_rectangle = self.make_obj_msg(msg, font_definition, color)
-        msg_rectangle = (x, y)
-        self.gameDisplay.blit(msg_surface, msg_rectangle)
 
     def give_me_pix(self, maxi=False, player=None, vision_limit=None):
         if not maxi:

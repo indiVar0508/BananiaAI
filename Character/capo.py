@@ -13,9 +13,9 @@ class CAPO(Rectangle):
         self.gotFood = False
         self.draw = draw
         if not draw:
-            self.characterDefault = pygame.transform.scale(pygame.image.load(r'Resources\Character\StandBy\1.png'),
+            self.characterDefault = pygame.transform.scale(pygame.image.load(r'Resources/Character/StandBy/1.png'),
                                                            (self.width, self.length))
-            self.winDefault = pygame.transform.scale(pygame.image.load(r'Resources\Character\StandBy\2.png'),
+            self.winDefault = pygame.transform.scale(pygame.image.load(r'Resources/Character/StandBy/2.png'),
                                                            (self.width, self.length))
             movements = os.path.join(r"Resources/Character/Movements")
             self.movements = {}

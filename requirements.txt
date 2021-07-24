@@ -1,12 +1,8 @@
 #
---trusted-host pypi.org
---trusted-host files.pythonhosted.org
---trusted-host pypi.python.org
-
-numpy==1.16.5
+numpy==1.21.1
 opencv-python==4.5.2.52
 pandas==1.0.5
-pillow==6.2.0
+pillow==8.2.0
 pygame==2.0.1
 python-dateutil==2.8.0
 pytz==2019.3

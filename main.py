@@ -1,6 +1,7 @@
 import pygame
 from Utility import ui
-from Level.level_one import Level, Level_PathFinding
+from Level.level_one import Level
+from Level.level_pathfinding import Level_PathFinding
 from Character.capo import CAPO
 
 
@@ -27,11 +28,11 @@ class Main:
                     if event.key == pygame.K_s:
                         self.resume = True
 
-            self.gameDisplay.fill((255, 255, 255))
+            self.gameDisplay.fill((180, 180, 180))
             ui.message(gameDisplay=self.gameDisplay, msg="Welcome, select your option !", x=self.gameDimension[0] // 2 - 80, y=30 )
-            ui.button(gameDisplay=self.gameDisplay, message="Play yourself", x=self.gameDimension[0] // 2 - 270, y=100, width=150, height=40,
+            ui.button(gameDisplay=self.gameDisplay, message="Play yourself", x=self.gameDimension[0] // 2 - 330, y=100, width=300, height=40,
                       inactive_color=(100,101,112), active_color=(50,50,56), action=lambda : self.initiate_level(Level))
-            ui.button(gameDisplay=self.gameDisplay, message="A* Algorithm", x=self.gameDimension[0] // 2 - 270, y=150, width=150, height=40,
+            ui.button(gameDisplay=self.gameDisplay, message="A* Algorithm", x=self.gameDimension[0] // 2 - 330, y=150, width=300, height=40,
                       inactive_color=(100,101,112), active_color=(50,50,56), action=lambda : self.initiate_level(Level_PathFinding))
 
             # to be activated
@@ -43,13 +44,13 @@ class Main:
                       inactive_color=(211,211,213), active_color=(211,211,213), action=None)
 
             # to be activated
-            ui.button(gameDisplay=self.gameDisplay, message="Dijkstra's Algorithm(to be enabled)", x=self.gameDimension[0] // 2 - 340, y=300, width=350, height=40,
+            ui.button(gameDisplay=self.gameDisplay, message="Dijkstra's Algorithm(to be enabled)", x=self.gameDimension[0] // 2 - 330, y=300, width=300, height=40,
                       inactive_color=(211,211,213), active_color=(211,211,213), action=None)
             # to be activated
             ui.button(gameDisplay=self.gameDisplay, message="Neuro Evolution(to be enabled)", x=self.gameDimension[0] // 2 + 30, y=100, width=300, height=40,
                       inactive_color=(211,211,213), active_color=(211,211,213), action=None)
             # to be activated
-            ui.button(gameDisplay=self.gameDisplay, message="DQN(to be enabled)", x=self.gameDimension[0] // 2 + 40, y=150, width=200, height=40,
+            ui.button(gameDisplay=self.gameDisplay, message="DQN(to be enabled)", x=self.gameDimension[0] // 2 + 30, y=150, width=300, height=40,
                       inactive_color=(211,211,213), active_color=(211,211,213), action=None)
             pygame.display.update()
             self.clock.tick(30)

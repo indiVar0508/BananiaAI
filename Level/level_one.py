@@ -76,11 +76,14 @@ class Level(GenericLevel):
         if self.food_exists:
             self.gameDisplay.blit(self.food, (self.food_cords[0].x, self.food_cords[0].y))
 
-    def show(self, *args):
+    def show_game(self, *args):
         self.gameDisplay.fill(self.background)
         self.draw_grids(*args)
         self.draw_hurdle()
         self.draw_food()
+
+    def show(self, *args):
+        self.show_game(*args)
         self.show_player(draw=self.player.draw)
 
     def pause_game(self, *args):

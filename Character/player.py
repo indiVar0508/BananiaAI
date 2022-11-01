@@ -3,7 +3,7 @@ import pygame
 from Utility.shape import Rectangle
 
 
-class CAPO(Rectangle):
+class Player(Rectangle):
 
     def __init__(self, step, draw=False, **kwargs):
         super().__init__(**kwargs)
@@ -37,3 +37,4 @@ class CAPO(Rectangle):
             self.y -= self.step
         elif self.down:
             self.y += self.step
+        

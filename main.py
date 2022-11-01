@@ -2,13 +2,14 @@ import pygame
 from Utility import ui
 from Level.level_one import Level
 from Level.level_pathfinding import Level_PathFinding
-from Character.capo import CAPO
+from Level.level_neuro_evolution import LevelNeuroEvolution
+from Character.player import Player
 
 
 class Main:
 
     def __init__(self):
-        self.player = CAPO(step=10, draw=False, x=30, y=200, length=30, width=30, color=(230, 220, 50))
+        self.player = Player(step=10, draw=False, x=30, y=200, length=30, width=30, color=(230, 220, 50))
         self.gameDimension = (700, 400)
         self.gameDisplay = pygame.display.set_mode(self.gameDimension)
         self.clock = pygame.time.Clock()
@@ -47,8 +48,8 @@ class Main:
             ui.button(gameDisplay=self.gameDisplay, message="Dijkstra's Algorithm(to be enabled)", x=self.gameDimension[0] // 2 - 330, y=300, width=300, height=40,
                       inactive_color=(211,211,213), active_color=(211,211,213), action=None)
             # to be activated
-            ui.button(gameDisplay=self.gameDisplay, message="Neuro Evolution(to be enabled)", x=self.gameDimension[0] // 2 + 30, y=100, width=300, height=40,
-                      inactive_color=(211,211,213), active_color=(211,211,213), action=None)
+            ui.button(gameDisplay=self.gameDisplay, message="Neuro Evolution", x=self.gameDimension[0] // 2 + 30, y=100, width=300, height=40,
+                      inactive_color=(100,101,112), active_color=(50,50,56), action=lambda: self.initiate_level(LevelNeuroEvolution))
             # to be activated
             ui.button(gameDisplay=self.gameDisplay, message="DQN(to be enabled)", x=self.gameDimension[0] // 2 + 30, y=150, width=300, height=40,
                       inactive_color=(211,211,213), active_color=(211,211,213), action=None)

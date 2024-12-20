@@ -1,0 +1,13 @@
+[project]
+name = "bananiaAI"
+version = "0.1.0"
+description = "Simple implementation of Banania and some agents trying to solve it."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "pygame",
+    "numpy",
+    "opencv-python",
+    "pillow"
+]

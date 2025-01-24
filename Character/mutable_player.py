@@ -1,14 +1,15 @@
 import numpy as np
+from copy import deepcopy
 from collections import deque
 from Character.player import Player
-from Character.brain.brain import mutableBrain
+from Character.brain.brain import MutableBrain
 
 class MutablePlayer(Player):
 
 	def __init__(self, step, draw=False, layers = [4, 2, 4], learningRate = 0.09, activationFunc = 'relu', Gaussian = False, weights = None, biasses = None, **kwargs):
 		super().__init__(step, draw, **kwargs)
-		self.Brain = mutableBrain(layers = layers, learningRate = learningRate, activationFunc = activationFunc, Gaussian = Gaussian, weights = weights, biasses = biasses)
-		self.steps = 50000
+		self.Brain = MutableBrain(layers = layers, learningRate = learningRate, activationFunc = activationFunc, Gaussian = Gaussian, weights = weights, biasses = biasses)
+		self.steps = 100_000
 		self.visionLimit = 50
 		self.leftVision = self.rightVision = self.upVision = self.downVision = (255, 255 ,255)
 		self.leftVisionBlock = (self.x + self.width // 2 - self.visionLimit, self.y + self.length // 2)
@@ -56,15 +57,15 @@ class MutablePlayer(Player):
 		i = len(hurdles) - 2
 		while i >= 0 and hurdles[i][0] > self.x: i -= 1
 		self.fitness += (1 / (abs(self.y - hurdles[i+1][1]) +1))
-		self.fitness += (i + 1) * 10 + self.got_food(foodCords)
+		self.fitness += i * 10 + self.got_food(foodCords)
 		self.fitness += (1 / (self.steps + 2))
 		if not (self.up or self.down or self.left or self.right):
 			self.fitness -= 1
 
 	def biCrossOver(parentOne, parentTwo):
-		child = MutablePlayer(step = parentOne.step, draw= parentOne.draw, layers = parentOne.Brain.layers, \
+		child = MutablePlayer(step = parentOne.step, draw= parentOne.draw, layers = deepcopy(parentOne.Brain.layers), \
 			activationFunc = parentOne.Brain.activationFunc, Gaussian = parentTwo.Brain.Gaussian,\
-				weights = parentOne.Brain.weights, biasses = parentTwo.Brain.biasses)
+				weights = deepcopy(parentOne.Brain.weights), biasses = deepcopy(parentTwo.Brain.biasses))
 		for idx, _ in enumerate(child.Brain.weights):
 			for row, __ in enumerate(child.Brain.weights[idx]):
 				for col, ___ in enumerate(child.Brain.weights[idx][row]):
@@ -75,10 +76,11 @@ class MutablePlayer(Player):
 				for col, ___ in enumerate(child.Brain.biasses[idx][row]):
 					if np.random.random() < 0.5: child.Brain.biasses[idx][row][col] = np.copy(parentOne.Brain.biasses[idx][row][col])
 					else: child.Brain.biasses[idx][row][col] = np.copy(parentTwo.Brain.biasses[idx][row][col])
+
 		return child
 
 	def uniCrossOver(parentOne):
-		child = MutablePlayer(step = parentOne.step, draw = parentOne.draw, layers = parentOne.Brain.layers, \
+		child = MutablePlayer(step = parentOne.step, draw = parentOne.draw, layers = deepcopy(parentOne.Brain.layers), \
 			activationFunc = parentOne.Brain.activationFunc, Gaussian = parentOne.Brain.Gaussian,\
 				weights = None, biasses = None)
 		for idx, _ in enumerate(child.Brain.weights):
@@ -108,22 +110,25 @@ class MutablePlayer(Player):
 			horizontal = 0
 			direction = 0
 
-		state = np.array([self.leftDistance / self.visionLimit, self.rightDistace / self.visionLimit, self.upDistance / self.visionLimit, self.downDistance / self.visionLimit,\
-						horizontal, direction, self.fitness])
+		state = np.array([1-(self.leftDistance / self.visionLimit), 1-(self.rightDistace / self.visionLimit), 1-(self.upDistance / self.visionLimit), 1-(self.downDistance / self.visionLimit),\
+						horizontal, direction, self.fitness, self.x / 700, self.y / 400])
 		
 		action = self.Brain.predict(X = state, show = 'softmax')[0]
 		# print(state, '-> ', action)
-		if action == 0: 
-			self.up = True
-			self.left = self.right = self.down = False
-		elif action == 1:
-			self.down = True
-			self.left = self.right = self.up = False
-		elif action == 2:
-			self.left = True
-			self.right = self.up = self.down = False
-		elif action == 3:
-			self.right = True
-			self.left = self.up = self.down = False
+		if np.random.random() < 0.05:
+			if action == 0: 
+				self.up = True
+				self.left = self.right = self.down = False
+			elif action == 1:
+				self.down = True
+				self.left = self.right = self.up = False
+			elif action == 2:
+				self.left = True
+				self.right = self.up = self.down = False
+			elif action == 3:
+				self.right = True
+				self.left = self.up = self.down = False
+		else:
+			action = np.random.randint(4)
 		self.steps -= 10
 		

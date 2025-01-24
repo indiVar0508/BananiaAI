@@ -9,17 +9,24 @@ class LevelNeuroEvolution(Level):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.inputs = 7
+        self.inputs = 9
         self.population = Population(step=10, draw=False,
-        layers = [[self.inputs, 10, 4],[self.inputs, 10, 10,4],
-        [self.inputs, 6, 4],[self.inputs, 18, 4],
-        [self.inputs, 20,  4],
-        [self.inputs, 12, 4],
-        [self.inputs, 5, 4], 
-        [self.inputs, 3, 2, 4], 
-        [self.inputs, 5, 7, 4], [self.inputs, 7, 4], [self.inputs, 8, 5, 4],[self.inputs, 12, 5, 4],
-        [self.inputs, 10, 4]] ,\
-        mutation = 0.2, populationSize = 100)
+        layers = [
+            [self.inputs, 10, 4],
+            [self.inputs, 10, 10,4],
+            [self.inputs, 6, 4],
+            [self.inputs, 18, 4],
+            [self.inputs, 20, 12,  4],
+            [self.inputs, 12, 4],
+            [self.inputs, 5, 4], 
+            [self.inputs, 3, 2, 4], 
+            [self.inputs, 5, 7, 4],
+            [self.inputs, 7, 4],
+            [self.inputs, 8, 5, 4],
+            [self.inputs, 12, 5, 4],
+            [self.inputs, 10, 4]
+        ] ,\
+        mutation = 0.2, populationSize = 500)
 
     def showVision(self, player, cords):
         self.handleVision(player)
@@ -145,6 +152,24 @@ class LevelNeuroEvolution(Level):
             while not self.population.allDead(): ######
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
+                        try:
+                            import numpy as np
+                            import matplotlib.pyplot as plt
+                            fig, ax1 = plt.subplots()
+                            ax1.plot(self.population.historical_best, color='b')
+                            ax1.set_xlabel('Generations')
+                            ax1.set_ylabel('Fitness Score', color='b')
+                            ax1.tick_params(axis='y', labelcolor='b')
+                            ax2 = ax1.twinx()
+                            ax2.bar(np.arange(1, len(self.population.naturally_selected)+1), self.population.naturally_selected, color='r',)
+                            ax2.set_ylabel('Selected population (out of 500)', color='r')
+                            ax2.tick_params(axis='y', labelcolor='r')
+                            plt.title('Fitness vs selection ')
+                            fig.tight_layout()
+                            plt.show()
+                            plt.savefig("evolution.png")
+                        except Exception as e:
+                            print(e)
                         return
 
                 self.population.think(self.food_cords[0])

@@ -9,5 +9,6 @@ dependencies = [
     "pygame",
     "numpy",
     "opencv-python",
-    "pillow"
+    "pillow",
+    "matplotlib>=3.10.0",
 ]

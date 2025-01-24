@@ -15,7 +15,7 @@ class NeuralNet():
 		self.activationFunc = activationFunc
 
 	def sigmoid(self, z):
-		return (1 / (1. + np.exp(-z)))
+		return (1 / (1. + np.exp(np.clip(-z, -708, 708))))
 
 	def sigmoidPrime(self, z):
 		return self.sigmoid(z) * (1 - self.sigmoid(z))
@@ -32,13 +32,17 @@ class NeuralNet():
 		assert self.layers[0] == X.shape[1]
 		activations = [X]
 		for w, b in zip(self.weights, self.biasses):
-			if self.activationFunc == 'sigmoid': X = self.sigmoid(np.matmul(X, w) + b)
-			elif self.activationFunc == 'relu': X = self.RelU(np.matmul(X, w) + b)
+			try:
+				if self.activationFunc == 'sigmoid': X = self.sigmoid(np.matmul(X, w) + b)
+				elif self.activationFunc == 'relu': X = self.RelU(np.matmul(X, w) + b)
+			except ValueError:
+				print(X.shape, w.shape, b.shape, self.layers, len(activations))
+				raise
 			activations.append(X)
 		return activations
 
 	def softmax(self, z):
-		exps = [np.exp(e) for e in z]
+		exps = [np.exp(np.clip(e, -708, 708)) for e in z]
 		sum_of_exps = np.sum(exps)
 		softmax = [e / sum_of_exps for e in exps]
 		return softmax

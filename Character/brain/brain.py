@@ -3,7 +3,7 @@ from collections import deque
 from Character.brain.myneuralnet import NeuralNet
 
 
-class mutableBrain(NeuralNet):
+class MutableBrain(NeuralNet):
 
 	def __init__(self, layers = [2, 2, 1], learningRate = 0.09, activationFunc = 'relu', Gaussian = False, weights = None, biasses = None):
 		super().__init__(layers, learningRate, activationFunc, Gaussian)
@@ -23,8 +23,21 @@ class mutableBrain(NeuralNet):
 						if self.Gaussian: self.biasses[i][row] = np.random.randn()
 						else: self.biasses[i][row] = np.random.random()
 
+		if np.random.random() < mutationRate:
+			# pick a random hidden layer
+			layer_idx = 1 if len(self.layers) == 3 else np.random.choice([1,2])
+			new_neurons = np.random.randint(30, 65)
+			self.layers[layer_idx] = new_neurons
+			
+			# update weights and biases
+			self.weights[layer_idx-1] = np.random.randn(self.layers[layer_idx-1], new_neurons)
+			self.weights[layer_idx] = np.random.randn(new_neurons, self.layers[layer_idx+1]) 
+
+			self.biasses[layer_idx-1] = np.random.randn(1, new_neurons)
+
+
 	def giveMeChildBrainBY(parent):
-		return mutableBrain(layers = parent.layers, learningRate = parent.learningRate, activationFunc = parent.activationFunc, Gaussian = parent.Gaussian,\
+		return MutableBrain(layers = parent.layers, learningRate = parent.learningRate, activationFunc = parent.activationFunc, Gaussian = parent.Gaussian,\
 					 weights = parent.weights, biasses = parent.biasses)
 
 # class QBrain:
@@ -63,7 +76,7 @@ class mutableBrain(NeuralNet):
 
 
 if __name__ == '__main__':
-	nn = mutableBrain(layers = [2, 2, 2], learningRate = 0.25, activationFunc = 'relu', Gaussian = False)
+	nn = MutableBrain(layers = [2, 2, 2], learningRate = 0.25, activationFunc = 'relu', Gaussian = False)
 	datasetX = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 	datasetY = [[1 - (x[0] ^ x[1]), x[0] ^ x[1]] for x in datasetX]
 	print(datasetY)

@@ -9,8 +9,8 @@ class MutablePlayer(Player):
 	def __init__(self, step, draw=False, layers = [4, 2, 4], learningRate = 0.09, activationFunc = 'relu', Gaussian = False, weights = None, biasses = None, **kwargs):
 		super().__init__(step, draw, **kwargs)
 		self.Brain = MutableBrain(layers = layers, learningRate = learningRate, activationFunc = activationFunc, Gaussian = Gaussian, weights = weights, biasses = biasses)
-		self.steps = 100_000
-		self.visionLimit = 50
+		self.steps = 500_000
+		self.visionLimit = 70
 		self.leftVision = self.rightVision = self.upVision = self.downVision = (255, 255 ,255)
 		self.leftVisionBlock = (self.x + self.width // 2 - self.visionLimit, self.y + self.length // 2)
 		self.rightVisionBlock = (self.x + self.width // 2 + self.visionLimit, self.y + self.length // 2)
